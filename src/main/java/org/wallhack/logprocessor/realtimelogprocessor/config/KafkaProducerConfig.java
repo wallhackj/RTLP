@@ -27,7 +27,7 @@ public class KafkaProducerConfig {
     private String maxInFlightRequestPerConnection;
 
     @Bean
-    public ProducerFactory<String, Object> multiTypeProducerFactory() {
+    public ProducerFactory<String, ?> multiTypeProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keySerializer);
@@ -39,7 +39,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, Object> multiTypeKafkaTemplate() {
+    public KafkaTemplate<String, ?> multiTypeKafkaTemplate() {
         return new KafkaTemplate<>(multiTypeProducerFactory());
     }
 
