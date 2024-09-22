@@ -14,7 +14,7 @@ services:
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
     volumes:
-      - /home/wallhack/IdeaProjects/RealTimeLogProcessor/volumes/server-1/:/bitnami/kafka
+      - /home/wallhack/IdeaProjects/volumes/server-1/:/bitnami/kafka
 
   kafka-2:
     image: bitnami/kafka:latest
@@ -31,7 +31,7 @@ services:
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
     volumes:
-      - /home/wallhack/IdeaProjects/RealTimeLogProcessor/volumes/server-2/:/bitnami/kafka
+      - /home/wallhack/IdeaProjects/volumes/server-2/:/bitnami/kafka
 
   kafka-3:
     image: bitnami/kafka:latest
@@ -48,4 +48,4 @@ services:
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
     volumes:
-      - /home/wallhack/IdeaProjects/RealTimeLogProcessor/volumes/server-3/:/bitnami/kafka
+      - /home/wallhack/IdeaProjects/volumes/server-3/:/bitnami/kafka
