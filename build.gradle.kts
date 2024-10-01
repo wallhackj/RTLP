@@ -26,12 +26,16 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation ("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
+    implementation("org.springframework.data:spring-data-elasticsearch:5.3.4")
+    implementation("org.hibernate.orm:hibernate-community-dialects:6.6.0.Final")
     implementation("org.apache.kafka:kafka-streams")
     implementation("org.springframework.kafka:spring-kafka")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
-    runtimeOnly("com.h2database:h2")
+    implementation("org.xerial:sqlite-jdbc:3.46.1.2")
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     runtimeOnly("io.micrometer:micrometer-core")
     annotationProcessor("org.projectlombok:lombok")

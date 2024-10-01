@@ -14,8 +14,7 @@ services:
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
     volumes:
-      - /home/wallhack/IdeaProjects/volumes/server-1/:/bitnami/kafka
-
+      - /docker/kafka/volumes/server-1/:/bitnami/kafka
   kafka-2:
     image: bitnami/kafka:latest
     ports:
@@ -31,8 +30,7 @@ services:
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
     volumes:
-      - /home/wallhack/IdeaProjects/volumes/server-2/:/bitnami/kafka
-
+      - /docker/kafka/volumes/server-2/:/bitnami/kafka
   kafka-3:
     image: bitnami/kafka:latest
     ports:
@@ -48,4 +46,53 @@ services:
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
     volumes:
-      - /home/wallhack/IdeaProjects/volumes/server-3/:/bitnami/kafka
+      - /docker/kafka/volumes/server-3/:/bitnami/kafka
+
+  odfe-node:
+    image: elasticsearch:8.15.2
+    logging:
+      driver: "json-file"
+    container_name: odfe-node
+    environment:
+      - discovery.type=single-node
+      - node.name=odfe-node
+      - discovery.seed_hosts=odfe-node
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      - ELASTIC_PASSWORD=changeme
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - ./elasticsearch_data:/docker/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - odfe-net
+
+  kibana:
+    image: kibana:8.15.2
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+    container_name: odfe-kibana
+    ports:
+      - "5601:5601"
+    expose:
+      - "5601"
+    environment:
+      ELASTICSEARCH_URL: http://odfe-node:9200
+      ELASTICSEARCH_HOSTS: http://odfe-node:9200
+    networks:
+        - odfe-net
+networks:
+  odfe-net:
+volumes:
+  odfe-data:
+
