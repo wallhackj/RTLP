@@ -3,7 +3,6 @@ package org.wallhack.logprocessor.realtimelogprocessor.repository.elastic;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.core.search.Hit;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.wallhack.logprocessor.realtimelogprocessor.service.dto.LogDocument;
 
@@ -14,28 +13,28 @@ import java.util.Objects;
 
 @Repository
 public class LogRepository {
-
-    @Autowired
-    private ElasticsearchClient elasticsearchClient;
-
+    private final ElasticsearchClient elasticsearchClient;
     private final String indexName = "realtime-logs";
 
-    public String createOrUpdateDocument(LogDocument doc) throws IOException {
+    public LogRepository(ElasticsearchClient elasticsearchClient) {
+        this.elasticsearchClient = elasticsearchClient;
+    }
 
+    public String createOrUpdateDocument(LogDocument doc) throws IOException {
         IndexResponse response = elasticsearchClient.index(
                 i -> i.index(indexName)
                         .id(doc.getId())
                         .document(doc)
         );
-        if(response.result().name().equals("Created")){
+        if (response.result().name().equals("Created")) {
             return "LogDocument document has been created successfully.";
-        } else if(response.result().name().equals("Updated")){
+        } else if (response.result().name().equals("Updated")) {
             return "LogDocument document has been updated successfully.";
         }
         return "Error while performing the operation.";
     }
 
-    public LogDocument getLogDocumentById(String id) throws IOException{
+    public LogDocument getLogDocumentById(String id) throws IOException {
         LogDocument doc = null;
         GetResponse<LogDocument> response = elasticsearchClient.get(
                 g -> g.index(indexName)
@@ -48,13 +47,12 @@ public class LogRepository {
             assert doc != null;
             System.out.println("LogDocument message is: " + doc.getMessage());
         } else {
-            System.out.println ("LogDocument not found");
+            System.out.println("LogDocument not found");
         }
         return doc;
     }
 
     public String deleteLogDocumentById(String id) throws IOException {
-
         DeleteRequest request = DeleteRequest.of(d -> d.index(indexName).id(id));
 
         DeleteResponse deleteResponse = elasticsearchClient.delete(request);
@@ -66,12 +64,11 @@ public class LogRepository {
     }
 
     public List<LogDocument> getAllLogDocument() throws IOException {
-
         SearchRequest searchRequest = SearchRequest.of(s -> s.index(indexName));
         SearchResponse<LogDocument> searchResponse = elasticsearchClient.search(searchRequest, LogDocument.class);
         List<Hit<LogDocument>> hits = searchResponse.hits().hits();
         List<LogDocument> docs = new ArrayList<>();
-        for(Hit<LogDocument> object : hits){
+        for (Hit<LogDocument> object : hits) {
             docs.add(object.source());
         }
         return docs;

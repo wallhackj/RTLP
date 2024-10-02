@@ -3,17 +3,17 @@ package org.wallhack.logprocessor.realtimelogprocessor.service.handler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.wallhack.logprocessor.realtimelogprocessor.repository.elastic.LogRepository;
+import org.wallhack.logprocessor.realtimelogprocessor.service.RepositoryService;
 import org.wallhack.logprocessor.realtimelogprocessor.service.dto.LogDTO;
 import org.wallhack.logprocessor.realtimelogprocessor.service.dto.LogDocument;
 import org.wallhack.logprocessor.realtimelogprocessor.service.dto.LogEntity;
-import org.wallhack.logprocessor.realtimelogprocessor.repository.elastic.LogRepository;
-import org.wallhack.logprocessor.realtimelogprocessor.repository.jpa.H2Repository;
 
 @Slf4j
 @Component("errorLogHandler")
 @AllArgsConstructor
 public class ErrorHandler implements LevelHandler {
-    private final H2Repository h2Repository;
+    private final RepositoryService repository;
     private final LogRepository elasticRepository;
 
     @Override
@@ -32,9 +32,12 @@ public class ErrorHandler implements LevelHandler {
         errorForSavingElastic.setMessage(message);
 
         try {
-            h2Repository.save(errorForSavingDB);
+            var entity = repository.save(errorForSavingDB);
             var output = elasticRepository.createOrUpdateDocument(errorForSavingElastic);
-            System.out.println(output);
+            if (entity != null) {
+                System.out.println(output);
+            }else throw new RuntimeException("Null entity!");
+
         } catch (Exception e) {
             log.error("Exception in ErrorHandler{}", e.getMessage());
         }

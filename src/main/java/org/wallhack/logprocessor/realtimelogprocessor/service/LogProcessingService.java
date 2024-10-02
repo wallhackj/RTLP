@@ -2,7 +2,6 @@ package org.wallhack.logprocessor.realtimelogprocessor.service;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.wallhack.logprocessor.realtimelogprocessor.service.dto.LogDTO;
@@ -17,7 +16,6 @@ public class LogProcessingService {
     private final LogHandlerFactory logHandlerFactory;
     private ExecutorService executor;
 
-    @Autowired
     public LogProcessingService(LogHandlerFactory logHandlerFactory) {
         this.logHandlerFactory = logHandlerFactory;
     }
