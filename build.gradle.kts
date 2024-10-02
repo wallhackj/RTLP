@@ -45,6 +45,7 @@ dependencies {
     testImplementation("org.springframework.kafka:spring-kafka-test")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:kafka")
+    testImplementation("org.testcontainers:elasticsearch:1.20.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
