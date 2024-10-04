@@ -1,5 +1,6 @@
 package org.wallhack.logprocessor.realtimelogprocessor.controller;
 
+
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
