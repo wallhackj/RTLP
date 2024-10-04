@@ -34,5 +34,6 @@ public class LogProducerController {
             log.error("Error sending log to Kafka: {}", e.getMessage());
             return Mono.just(ResponseEntity.status(500).body("Error sending log to Kafka"));
         });
+
     }
 }

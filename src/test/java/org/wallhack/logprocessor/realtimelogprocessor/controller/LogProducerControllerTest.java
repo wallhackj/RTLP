@@ -1,7 +1,6 @@
 package org.wallhack.logprocessor.realtimelogprocessor.controller;
 
 
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
@@ -37,8 +36,7 @@ class LogProducerControllerTest {
     private final static String LOG_ENDPOINT = "/log";
 
     @Test
-    @SneakyThrows
-    public void testSendLog() {
+    public void testSendLog() throws Exception {
         var logDTO = new LogDTO("This is a test log message", "INFO", Date.from(Instant.now()));
 
         mvc.perform(post(LOG_ENDPOINT)
