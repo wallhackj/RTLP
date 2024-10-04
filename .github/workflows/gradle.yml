@@ -43,7 +43,7 @@ jobs:
       
     # Build the project
     - name: Build with Gradle Wrapper
-      run: ./gradlew build
+      run: ./gradlew clean build
 
   dependency-submission:
 
