@@ -36,14 +36,14 @@ jobs:
         key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
           gradle-${{ runner.os }}
-
+          
+# Run tests automatically
+    - name: Run tests
+      run: ./gradlew test
+      
     # Build the project
     - name: Build with Gradle Wrapper
       run: ./gradlew build
-
-    # Run tests automatically
-    - name: Run tests
-      run: ./gradlew test
 
   dependency-submission:
 
