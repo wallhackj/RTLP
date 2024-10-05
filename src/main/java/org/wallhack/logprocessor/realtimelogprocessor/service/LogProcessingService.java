@@ -10,7 +10,6 @@ import org.wallhack.logprocessor.realtimelogprocessor.service.handler.LogHandler
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
 @Service
 public class LogProcessingService {
     private final LogHandlerFactory logHandlerFactory;
