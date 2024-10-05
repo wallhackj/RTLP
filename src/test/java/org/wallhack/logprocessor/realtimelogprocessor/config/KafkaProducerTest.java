@@ -31,7 +31,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers
 @SpringBootTest
 class KafkaProducerTest {
-    private static KafkaContainer kafka;
+    private KafkaContainer kafka;
+    private static String bootstrapServers;
 
     @Autowired
     private KafkaTemplate<String, LogDTO> kafkaTemplate;
@@ -41,6 +42,7 @@ class KafkaProducerTest {
         DockerImageName kafkaImage = DockerImageName.parse("bitnami/kafka:latest")
                 .asCompatibleSubstituteFor("confluentinc/cp-kafka");
         kafka = new KafkaContainer(kafkaImage);
+        bootstrapServers = kafka.getBootstrapServers();
         kafka.start();
     }
 
@@ -51,7 +53,7 @@ class KafkaProducerTest {
 
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {
-        registry.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
+        registry.add("spring.kafka.bootstrap-servers", () -> bootstrapServers);
     }
 
     @Test
