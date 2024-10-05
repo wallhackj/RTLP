@@ -43,6 +43,7 @@ class LogProducerControllerTest {
                 .expectStatus().isOk();
 
         ArgumentCaptor<LogDTO> captor = ArgumentCaptor.forClass(LogDTO.class);
+        System.out.println(controller);
 
         verify(kafkaTemplate).send(eq("test-log-topic"), captor.capture());
         assertThat(captor.getValue()).isEqualTo(logDTO);
