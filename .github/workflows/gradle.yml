@@ -39,11 +39,11 @@ jobs:
           
 # Run tests automatically
     - name: Run tests
-      run: ./gradlew test
+      run: ./gradlew clean test --no-daemon
       
     # Build the project
     - name: Build with Gradle Wrapper
-      run: ./gradlew clean build
+      run: ./gradlew clean build --no-daemon
 
   dependency-submission:
 
