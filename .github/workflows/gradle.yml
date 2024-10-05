@@ -39,11 +39,11 @@ jobs:
           
 # Run tests automatically
     - name: Run tests
-      run: ./gradlew clean test -Dspring.aot.enabled=false --no-daemon -XX:+EnableDynamicAgentLoading
+      run: ./gradlew clean test -Dspring.aot.enabled=false --no-daemon -Djava.instrument.traceUsage
       
     # Build the project
     - name: Build with Gradle Wrapper
-      run: ./gradlew clean build -Dspring.aot.enabled=false --no-daemon -XX:+EnableDynamicAgentLoading
+      run: ./gradlew clean build -Dspring.aot.enabled=false --no-daemon -Djava.instrument.traceUsage
 
   dependency-submission:
 
