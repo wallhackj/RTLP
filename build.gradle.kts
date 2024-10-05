@@ -51,4 +51,5 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    systemProperty("spring.aot.enabled", "false")
 }
