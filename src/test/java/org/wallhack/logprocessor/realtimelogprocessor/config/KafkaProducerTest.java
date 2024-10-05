@@ -31,14 +31,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers
 @SpringBootTest
 class KafkaProducerTest {
-    private static KafkaContainer kafka;
+    private static final KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("bitnami/kafka:latest"));
 
     @Autowired
     private KafkaTemplate<String, LogDTO> kafkaTemplate;
 
     @BeforeEach
     void setUp() {
-        kafka = new KafkaContainer(DockerImageName.parse("bitnami/kafka:latest"));
         kafka.start();
     }
 
