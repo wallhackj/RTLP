@@ -1,13 +1,16 @@
 package org.wallhack.logprocessor.realtimelogprocessor.config;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.test.context.ActiveProfiles;
 import org.wallhack.logprocessor.realtimelogprocessor.service.dto.LogDTO;
 
 import java.util.Map;
@@ -15,13 +18,19 @@ import java.util.Map;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class IdempotentProducerIntegrationTest {
     @Autowired
     private KafkaTemplate<String, LogDTO> kafkaTemplate;
 
     @MockBean
-    private KafkaAdmin admin; // to make test faster ,because i don't work with topic in this test
+    // to make test faster ,because i don't work with topic in this test
+    private KafkaAdmin admin; // Replace @MockBean with a manual mock
 
+    @BeforeEach
+    void setup() {
+        admin = Mockito.mock(KafkaAdmin.class);
+    }
 
     @Test
     public void testProducerConfig_whenIdempotentEnabled() {
