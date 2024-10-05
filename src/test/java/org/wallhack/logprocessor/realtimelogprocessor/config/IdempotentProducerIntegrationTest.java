@@ -22,6 +22,7 @@ class IdempotentProducerIntegrationTest {
     @MockBean
     private KafkaAdmin admin; // to make test faster ,because i don't work with topic in this test
 
+
     @Test
     public void testProducerConfig_whenIdempotentEnabled() {
         System.out.println(admin);
