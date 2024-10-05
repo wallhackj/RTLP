@@ -11,6 +11,7 @@ import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.aot.DisabledInAotMode;
 import org.wallhack.logprocessor.realtimelogprocessor.service.dto.LogDTO;
 
 import java.util.Map;
@@ -18,6 +19,7 @@ import java.util.Map;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
+@DisabledInAotMode
 @ActiveProfiles("test")
 class IdempotentProducerIntegrationTest {
     @Autowired
