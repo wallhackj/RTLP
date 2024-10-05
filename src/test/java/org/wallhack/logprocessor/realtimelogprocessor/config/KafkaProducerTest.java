@@ -58,7 +58,16 @@ class KafkaProducerTest {
 
         kafkaTemplate.send("test-log-topic", logDTO);
 
-        KafkaConsumer<String, LogDTO> consumer = new KafkaConsumer<>(props());
+        Map<String, Object> consumerProps = new HashMap<>();
+        consumerProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafka.getBootstrapServers());
+        consumerProps.put(ConsumerConfig.GROUP_ID_CONFIG, "test-consumer-group");
+        consumerProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        consumerProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
+        consumerProps.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName());
+        consumerProps.put(JsonDeserializer.VALUE_DEFAULT_TYPE, LogDTO.class.getName());
+        consumerProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+
+        KafkaConsumer<String, LogDTO> consumer = new KafkaConsumer<>(consumerProps);
         consumer.subscribe(Collections.singletonList("test-log-topic"));
 
         ConsumerRecord<String, LogDTO> record = consumer.poll(Duration.ofSeconds(5)).iterator().next();
@@ -68,17 +77,5 @@ class KafkaProducerTest {
         assertThat(record.key()).isEqualTo("logId123");
 
         consumer.close();
-    }
-
-    private static Map<String, Object> props() {
-        Map<String, Object> consumerProps = new HashMap<>();
-        consumerProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafka.getBootstrapServers());
-        consumerProps.put(ConsumerConfig.GROUP_ID_CONFIG, "test-consumer-group");
-        consumerProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        consumerProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
-        consumerProps.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName());
-        consumerProps.put(JsonDeserializer.VALUE_DEFAULT_TYPE, LogDTO.class.getName());
-        consumerProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-        return consumerProps;
     }
 }
