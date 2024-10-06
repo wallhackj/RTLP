@@ -1,4 +1,19 @@
 services:
+  prometheus:
+    image: bitnami/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/docker/prometheus/prometheus.yml
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    volumes:
+      - ./grafana/datasources:/docker/grafana/datasources
   kafka-1:
     image: bitnami/kafka:latest
     ports:
